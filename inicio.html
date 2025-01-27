@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repuesto y Ferretería GMA</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <script>
+        
+        function agregarAlCarrito(nombreProducto, precioProducto) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            
+            let productoExistente = carrito.find(item => item.nombre === nombreProducto);
+
+            if (productoExistente) {
+                productoExistente.cantidad++; 
+            } else {
+                carrito.push({
+                    nombre: nombreProducto,
+                    precio: precioProducto,
+                    cantidad: 1
+                });
+            }
+
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            actualizarCarrito();
+        }
+
+        
+        function actualizarCarrito() {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            let cantidadTotal = carrito.reduce((total, item) => total + item.cantidad, 0);
+            document.querySelector('.cart-count').textContent = cantidadTotal;
+        }
+
+       
+        function mostrarCarrito() {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            let carritoMenu = document.querySelector('.carrito-menu');
+            carritoMenu.innerHTML = ''; 
+
+            if (carrito.length === 0) {
+                carritoMenu.innerHTML = '<p>El carrito está vacío.</p>';
+            } else {
+                let total = 0;
+                carrito.forEach(item => {
+                    total += item.precio * item.cantidad;
+                    carritoMenu.innerHTML += `
+                        <div class="producto-carrito">
+                            <p>${item.nombre} - $${item.precio} x ${item.cantidad}</p>
+                            <button onclick="eliminarDelCarrito('${item.nombre}')">Eliminar</button>
+                        </div>
+                    `;
+                });
+                carritoMenu.innerHTML += `<hr><p>Total: $${total.toFixed(2)}</p>`;
+            }
+
+            carritoMenu.style.display = 'block'; // Mostrar el carrito
+            carritoMenu.innerHTML += `<button onclick="ocultarCarrito()" class="cerrar-carrito">Cerrar Carrito</button>`;
+        }
+
+        
+        function eliminarDelCarrito(nombreProducto) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito = carrito.filter(item => item.nombre !== nombreProducto); 
+
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            actualizarCarrito(); 
+            mostrarCarrito(); 
+        }
+
+        
+        function ocultarCarrito() {
+            document.querySelector('.carrito-menu').style.display = 'none'; // Ocultar el carrito
+        }
+
+        
+        window.onload = function() {
+            actualizarCarrito();
+            mostrarCarrito(); 
+        }
+    </script>
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">[Repuesto y Ferretería] [GMA]</div>
+            <nav>
+                <ul>
+                    <li><a href="portar.html">Inicio</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="search-cart">
+                <input type="text" placeholder="Buscar productos...">
+                <div class="cart" onclick="mostrarCarrito()">
+                    <span>🛒</span>
+                    <span class="cart-count"></span>
+                </div>
+                <a href="#">Iniciar Sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Encuentra los mejores productos al mejor precio</h1>
+            <p>Compra productos de calidad para tu hogar o negocio</p>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <h2>Nuestros productos en venta</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="c:\Users\admin\Desktop\prueba de visual estudio\imagen\TORRES AUTO TOTAL THJS0201 2T.jpg" height="250" width="265" alt="producto 1">
+                    <h3>TORRES AUTO TOTAL THJS0201 2T</h3>
+                    <p>$99.99</p>
+                    <button onclick="agregarAlCarrito('TORRES AUTO TOTAL THJS0201 2T', 99.99)">Añadir al Carrito</button>
+                </div>
+                
+                <div class="product">
+                    <img src="c:\Users\admin\Desktop\prueba de visual estudio\imagen\Llave inglesa.jpg" height="250" width="265" alt="producto 2">
+                    <h3>Llave inglesa</h3>
+                    <p>$29.99</p>
+                    <button onclick="agregarAlCarrito('Llave inglesa', 29.99)">Añadir al Carrito</button>
+                </div>
+                
+                <div class="product">
+                    <img src="c:\Users\admin\Desktop\prueba de visual estudio\imagen\Alicate universal o de electricista.jpg" height="250" width="265" alt="producto 3">
+                    <h3>Alicate universal o de electricista</h3>
+                    <p>$29.99</p>
+                    <button onclick="agregarAlCarrito('Alicate universal o de electricista', 29.99)">Añadir al Carrito</button>
+                </div>
+                
+                <div class="product">
+                    <img src="c:\Users\admin\Desktop\prueba de visual estudio\imagen\Alicates o pinzas de presión.jpg" height="240" width="265" alt="producto 4">
+                    <h3>Alicates o pinzas de presión</h3>
+                    <p>$19.99</p>
+                    <button onclick="agregarAlCarrito('Alicates o pinzas de presión', 19.99)">Añadir al Carrito</button>
+                </div>
+                
+                <div class="product">
+                    <img src="c:\Users\admin\Desktop\prueba de visual estudio\imagen\Mobil 1™ 5W-30 - LUBRICANTES MOBIL.jfif" height="265" width="265" alt="producto 5">
+                    <h3>Mobil 1™ 5W-30 - LUBRICANTES MOBIL</h3>
+                    <p>$39.99</p>
+                    <button onclick="agregarAlCarrito('Mobil 1™ 5W-30 - LUBRICANTES MOBIL', 39.99)">Añadir al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <div class="carrito-menu" style="display:none; position: absolute; top: 50px; right: 20px; background-color: white; border: 1px solid #ccc; padding: 10px; width: 300px;">
+        <!-- El contenido del carrito se genera dinámicamente aquí -->
+    </div>
+
+    <footer>
+        <div class="container">
+            <ul>
+                <li><a href="#">Política de Privacidad</a></li>
+                <li><a href="#">Términos y Condiciones</a></li>
+                <li><a href="#">Devoluciones</a></li>
+            </ul>
+            <div class="contact-info">
+                <p>Dirección: Calle Ejemplo 123, Ciudad</p>
+                <p>Teléfono: +34 123 456 789</p>
+                <p>Email: contacto@mitienda.com</p>
+            </div>
+            <div class="social-media">
+                <a href="https://es-la.facebook.com/login/device-based/regular/login/">Facebook</a>
+                <a href="https://twitter.com/login">Twitter</a>
+                <a href="https://www.instagram.com/">Instagram</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
